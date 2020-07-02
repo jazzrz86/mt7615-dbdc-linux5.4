@@ -192,8 +192,10 @@ cmm_objs := $(SRC_EMBEDDED_DIR)/common/action.o\
 		$(SRC_DIR)/protocol/protection.o\
 		$(SRC_EMBEDDED_DIR)/common/misc_app.o
 
+ifeq ($(CONFIG_MULTI_PROFILE_SUPPORT),y)
 EXTRA_CFLAGS += -DMULTI_PROFILE
 cmm_objs += $(SRC_EMBEDDED_DIR)/common/multi_profile.o
+endif
 
 ifeq ($(CONFIG_DEFAULT_5G_PROFILE),y)
 EXTRA_CFLAGS += -DDEFAULT_5G_PROFILE
@@ -535,7 +537,7 @@ ifeq ($(CONFIG_CFG80211_SUPPORT),y)
 endif
 
 ifeq ($(CONFIG_MAP_SUPPORT),y)
-	EXTRA_CFLAGS += -DA4_CONN -DROUTING_TAB_SUPPORT -DWAPP_SUPPORT -DCONFIG_MAP_SUPPORT 
+	EXTRA_CFLAGS += -DA4_CONN -DROUTING_TAB_SUPPORT -DWAPP_SUPPORT -DCONFIG_MAP_SUPPORT
 	spec_objs += $(SRC_EMBEDDED_DIR)/common/map.o
 	spec_objs += $(SRC_EMBEDDED_DIR)/common/a4_conn.o
 	spec_objs += $(SRC_EMBEDDED_DIR)/common/routing_tab.o
