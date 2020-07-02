@@ -3532,8 +3532,9 @@ INT RTMPAPSetInformation(
 			APCLI_STRUCT *apcli_entry;
 			struct DOT11_H *pDot11h = NULL;
 			BSS_STRUCT *pMbss = NULL;
-#ifdef APCLI_SUPPORT
+
 			if (pObj->ioctl_if_type == INT_APCLI) {
+#ifdef APCLI_SUPPORT
 				apcli_entry = &pAd->ApCfg.ApCliTab[apcli_idx];
 				wdev = &apcli_entry->wdev;
 				/* bring apcli interface down first */
@@ -3555,8 +3556,9 @@ INT RTMPAPSetInformation(
 					apcli_entry->ifIndex, apcli_entry->CfgSsidLen,
 					apcli_entry->CfgSsid));
 				apcli_entry->Enable = apcliEn;
-			} else {
 #endif
+			} else {
+
 				if (pObj->ioctl_if < HW_BEACON_MAX_NUM) {
 					pMbss = &pAd->ApCfg.MBSSID[pObj->ioctl_if];
 					wdev = &pMbss->wdev;
