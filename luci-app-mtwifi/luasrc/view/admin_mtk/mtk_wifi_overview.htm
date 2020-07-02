@@ -2,7 +2,7 @@
 <!--
     This module is a demo to configure MTK' proprietary WiFi driver.
     Basic idea is to bypass uci and edit wireless profile (mt76xx.dat) directly.
-    LuCI's WiFi configuration is more logical and elegent, but it's quite tricky to 
+    LuCI's WiFi configuration is more logical and elegent, but it's quite tricky to
     translate uci into MTK's WiFi profile (like we did in "uci2dat").
 
     Hua Shao <nossiac@163.com>
@@ -31,7 +31,7 @@ local devs = mtkwifi.get_all_devs()
             <tbody>
                 <tr>
                     <td style="width:34px">
-                        <img src="/luci-static/resources/icons/wifi_big.png" style="float:left; margin-right:10px" />
+                        <img src="/luci-static/resources/icons/wifi.png" style="float:left; margin-right:10px" />
                     </td>
                     <td colspan="2" style="text-align:left">
                         <big><strong title="<%=dev.profile%>"><%=dev.devname%></strong></big>
@@ -40,7 +40,7 @@ local devs = mtkwifi.get_all_devs()
                         if next(diff) ~= nil then
                         %>
                             <span style="color:red;">* need reload to apply changes</span>
-                        <% 
+                        <%
                         end
                         %>
                         <br/>
@@ -64,7 +64,7 @@ local devs = mtkwifi.get_all_devs()
                         <img src="/luci-static/resources/icons/signal-none.png" />
                         <% end %>
                     </td>
-                    <td class="cbi-value-field" style="vertical-align:middle; text-align:left; padding:3px"><strong>Interface:</strong> <%=vif.vifname%> | <strong>SSID:</strong> <%=vif.__ssid%> | <strong>Channel:</strong> <%=vif.__channel or dev.Channel%> 
+                    <td class="cbi-value-field" style="vertical-align:middle; text-align:left; padding:3px"><strong>Interface:</strong> <%=vif.vifname%> | <strong>SSID:</strong> <%=vif.__ssid%> | <strong>Channel:</strong> <%=vif.__channel or dev.Channel%>
                         <br/>
                         <% if vif.state == "up" then %>
                         <strong>BSSID:</strong>:<%=vif.__bssid%> | <strong>Mode:</strong> <%=dev.WirelessModeList[tonumber(vif.__wirelessmode or dev.WirelessMode)]%>
