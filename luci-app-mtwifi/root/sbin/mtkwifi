@@ -83,7 +83,7 @@ end
 
 function wifi_common_status(devname)
 	nixio.syslog("debug", "wifi_common_status "..tostring(devname))
-	print(mtkwifi.read_pipe("iwconfig"))
+	--print(mtkwifi.read_pipe("iwconfig"))
 	print(mtkwifi.read_pipe("ifconfig -a"))
 end
 
