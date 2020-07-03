@@ -374,12 +374,12 @@ if next(diff) ~= nil then
                 <td>Beamforming/MIMO</td>
                 <td>
                     <select name="__mimo" style="width:auto">
-                        <option value="0" <% if dev.__mimo == "0" then %>selected="selected"<% end %>>Explicit Bf Only</option>
-                        <option value="1" <% if dev.__mimo == "1" then %>selected="selected"<% end %>>Implicit Bf Only</option>
-                        <option value="2" <% if dev.__mimo == "2" then %>selected="selected"<% end %>>Expl/Impl Bf</option>
-                        <option value="3" <% if dev.__mimo == "3" then %>selected="selected"<% end %>>Explicit Bf MIMO</option>
-                        <option value="4" <% if dev.__mimo == "4" then %>selected="selected"<% end %>>Expl/Impl Bf MIMO</option>
-                        <option value="5" <% if dev.__mimo == "5" then %>selected="selected"<% end %>>BF/MIMO Off</option>
+                        <option value="0" <% if dev.__mimo == 0 then %>selected="selected"<% end %>>Explicit Bf Only</option>
+                        <option value="1" <% if dev.__mimo == 1 then %>selected="selected"<% end %>>Implicit Bf Only</option>
+                        <option value="2" <% if dev.__mimo == 2 then %>selected="selected"<% end %>>Expl/Impl Bf</option>
+                        <option value="3" <% if dev.__mimo == 3 then %>selected="selected"<% end %>>Explicit Bf MIMO</option>
+                        <option value="4" <% if dev.__mimo == 4 then %>selected="selected"<% end %>>Expl/Impl Bf MIMO</option>
+                        <option value="5" <% if dev.__mimo == 5 then %>selected="selected"<% end %>>BF/MIMO Off</option>
                     </select>
                 </td>
                 <td></td>
