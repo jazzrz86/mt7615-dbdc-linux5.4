@@ -187,7 +187,7 @@ ifneq ($(CONFIG_MTK_WHNAT_SUPPORT), )
 else
   FILES:=$(PKG_BUILD_DIR)/mt_wifi_ap/mt_wifi.ko
   AUTOLOAD:=$(call AutoProbe,mt_wifi)
-endif  
+endif
   SUBMENU:=Wireless Drivers
   MENU:=1
 endef
@@ -212,8 +212,8 @@ define KernelPackage/mt_wifi/install
 	$(INSTALL_DIR) $(1)/etc/wireless/mt7615/
 	$(INSTALL_DIR) $(1)/etc_ro/Wireless/RT2860AP/
 	$(INSTALL_BIN) ./files/l1profile.dat $(1)/etc/wireless/
-	$(INSTALL_BIN) ./files/mt7615.1.2G.dat $(1)/etc/wireless/mt7615/
-	$(INSTALL_BIN) ./files/mt7615.1.5G.dat $(1)/etc/wireless/mt7615/
+	$(INSTALL_BIN) ./files/mt7615e.1.dat $(1)/etc/wireless/mt7615/
+	$(INSTALL_BIN) ./files/mt7615e.2.dat $(1)/etc/wireless/mt7615/
 	$(INSTALL_BIN) ./files/SingleSKU.dat $(1)/etc_ro/Wireless/RT2860AP/
 	$(INSTALL_BIN) ./files/SingleSKU_BF.dat $(1)/etc_ro/Wireless/RT2860AP/
 	$(INSTALL_BIN) ./files/mt7615.lua $(1)/lib/wifi
