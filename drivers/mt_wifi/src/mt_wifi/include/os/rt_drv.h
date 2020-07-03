@@ -340,7 +340,8 @@ typedef struct os_cookie	*POS_COOKIE;
 /***********************************************************************************
  *	OS debugging and printing related definitions and data structure
  ***********************************************************************************/
-#define MTWF_PRINT	printk
+#define MTWF_PRINT pr_cont
+
 
 #undef  ASSERT
 #ifdef DBG

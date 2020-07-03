@@ -1998,7 +1998,7 @@ INT BndStrg_MsgHandle(PRTMP_ADAPTER pAd, RTMP_IOCTL_INPUT_STRUCT *wrq, INT apidx
 			struct bnd_msg_cli_add *cli_add = &msg->data.cli_add;
 
 #ifdef BND_STRG_QA
-		BND_STRG_PRINTQAMSG(table, cli_add->Addr, (("%s[%d][Channel:%d]: Add (%02x:%02x:%02x:%02x:%02x:%02x) client to %s driver table\n\r"),
+		BND_STRG_PRINTQAMSG(table, cli_add->Addr, ("%s[%d][Channel:%d]: Add (%02x:%02x:%02x:%02x:%02x:%02x) client to %s driver table\n\r",
 			__func__, __LINE__, table->Channel, PRINT_MAC(cli_add->Addr), (IS_5G_BAND(table->Band) ? "5G":"2.4G")));
 #endif
 
@@ -2028,7 +2028,7 @@ INT BndStrg_MsgHandle(PRTMP_ADAPTER pAd, RTMP_IOCTL_INPUT_STRUCT *wrq, INT apidx
 				if (pEntry && (apidx == pEntry->func_tb_idx)
 						&& pAd->ApCfg.BndStrgBssIdx[pEntry->func_tb_idx]) {
 #ifdef BND_STRG_QA
-				BND_STRG_PRINTQAMSG(table, cli_del->Addr, (("%s[%d]: kick out client's (%02x:%02x:%02x:%02x:%02x:%02x)\n\r"),
+				BND_STRG_PRINTQAMSG(table, cli_del->Addr, ("%s[%d]: kick out client's (%02x:%02x:%02x:%02x:%02x:%02x)\n\r",
 										 __func__, __LINE__, PRINT_MAC(cli_del->Addr)));
 #endif
 					MlmeDeAuthAction(pAd, pEntry, REASON_DISASSOC_STA_LEAVING, FALSE);
@@ -2037,7 +2037,7 @@ INT BndStrg_MsgHandle(PRTMP_ADAPTER pAd, RTMP_IOCTL_INPUT_STRUCT *wrq, INT apidx
 
 				BndStrg_DeleteEntry(table, cli_del->Addr, 0xFF);
 #ifdef BND_STRG_QA
-			BND_STRG_PRINTQAMSG(table, cli_del->Addr, (("%s[%d][Channel:%d]:DEL (%02x:%02x:%02x:%02x:%02x:%02x) client from %s driver table\n\r"),
+			BND_STRG_PRINTQAMSG(table, cli_del->Addr, ("%s[%d][Channel:%d]:DEL (%02x:%02x:%02x:%02x:%02x:%02x) client from %s driver table\n\r",
 				__func__, __LINE__, table->Channel, PRINT_MAC(cli_del->Addr), (IS_5G_BAND(table->Band) ? "5G":"2.4G")));
 #endif
 			}
