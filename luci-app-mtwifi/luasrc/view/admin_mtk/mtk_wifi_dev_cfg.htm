@@ -117,7 +117,7 @@ if next(diff) ~= nil then
             </tr>
             <% end %>
             <tr>
-                <td>Channel BandWidth</td>
+                <td>Channel Bandwidth</td>
                 <td>
                     <select style="width:auto" name="__bw" id="__bw" onchange="Bw_onchange(this.options[this.options.selectedIndex].value)">
                         <option value="20" <% if dev.__bw == "20" then %> selected="selected"<% end%>>20 MHz</option>
@@ -285,7 +285,7 @@ if next(diff) ~= nil then
             <% end %>
             <% if cfgs.DtimPeriod then %>
             <tr>
-                <td>Data Beacon Rate (DTIM)</td>
+                <td>Data Beacon Rate (DTIM) </td>
                 <td>
                     <input name="DtimPeriod" value="<%=cfgs.DtimPeriod%>" />ms(range 1-255, default 1)
                 </td>
@@ -379,7 +379,7 @@ if next(diff) ~= nil then
                         <option value="2" <% if dev.__mimo == 2 then %>selected="selected"<% end %>>Expl/Impl Bf</option>
                         <option value="3" <% if dev.__mimo == 3 then %>selected="selected"<% end %>>Explicit Bf MIMO</option>
                         <option value="4" <% if dev.__mimo == 4 then %>selected="selected"<% end %>>Expl/Impl Bf MIMO</option>
-                        <option value="5" <% if dev.__mimo == 5 then %>selected="selected"<% end %>>BF/MIMO Off</option>
+                        <option value="5" <% if dev.__mimo == 5 then %>selected="selected"<% end %>>Bf/MIMO Off</option>
                     </select>
                 </td>
                 <td></td>
@@ -398,23 +398,15 @@ if next(diff) ~= nil then
 </form>
 
 
-<form method="post" name="cbi2" action="<%=luci.dispatcher.build_url("admin", "network", "wifi", "dev_cfg_raw", devname)%>" enctype="multipart/form-data" onreset="return cbi_validate_reset(this)" onsubmit="return cbi_validate_form(this, 'Some fields are invalid, cannot save values!')" autocomplete="off">
-    <fieldset class="cbi-section">
-        <legend> Raw Configurations ( Edit WiFi profile directly )</legend>
-        <p> <span style="color: red"><b>WARNING</b></span> : DO NOT MESS WITH IT IF YOU DON'T UNDERSTAND IT!</p>
-        <textarea name="raw" id="raw" style="width:98%; height: 200px;"><%
-            local fd = io.open(dev.profile)
-            for line in fd:lines() do
-                print(line)
-            end
-        %></textarea>
-    </fieldset>
-    <div class="cbi-page-actions">
-        <input class="cbi-button cbi-button-reset" value="Reset" onclick="location.href='<%=luci.dispatcher.build_url("admin", "network", "wifi", "dev_cfg_view", devname)%>'" type="button" />
-        <input class="cbi-button cbi-button-apply" id="save" value="Save" type="submit" onclick="if (confirm('You are going to overwrite the profile directly, are you sure?')) return true; else return false;" />
-        <input class="cbi-button cbi-button-apply" id="reset" value="Restore Profile to Factory Setting" type="button" onclick="if (confirm('You are going to reset the profile of <%=devname%> to factory default, are you sure?')) location.href='<%=luci.dispatcher.build_url("admin", "network", "wifi", "dev_cfg_reset", devname)%>'" />
-    </div>
-</form>
+<fieldset class="cbi-section">
+    <legend> Raw Configurations View</legend>
+    <textarea name="raw" id="raw" style="width:98%; height: 200px;" readonly><%
+        local fd = io.open(dev.profile)
+        for line in fd:lines() do
+            print(line)
+        end
+    %></textarea>
+</fieldset>
 
 
 <script type="text/javascript">

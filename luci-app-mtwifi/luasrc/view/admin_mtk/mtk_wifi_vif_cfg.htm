@@ -3,7 +3,7 @@
 <!--
   This module is a demo to configure MTK' proprietary WiFi driver.
   Basic idea is to bypass uci and edit wireless profile (mt76xx.dat) directly.
-  LuCI's WiFi configuration is more logical and elegent, but it's quite tricky to 
+  LuCI's WiFi configuration is more logical and elegent, but it's quite tricky to
   translate uci into MTK's WiFi profile (like we did in "uci2dat").
 
   Hua Shao <nossiac@163.com>
@@ -74,7 +74,7 @@ local diff = mtkwifi.diff_profile(dev.profile)
 if next(diff) ~= nil then
 %>
 <span style="color:red;">(<a href="javascript:location.href='<%=luci.dispatcher.build_url("admin", "network", "wifi", "reload", dev.devname)%>'">reload</a> to apply changes)</span>
-<% 
+<%
 end
 %>
     </legend>
@@ -87,20 +87,6 @@ end
             <input value="<%=request[4]%>" name="__action" type="hidden" />
           </td>
         </tr>
-        <% if dev.DBDC_MODE == "0" then %>
-        <tr>
-          <td>Channel</td>
-          <td>
-            <select style="width:auto" name="__channel">
-              <% for i=0,14 do %>
-              <option value="<%=i%>" <% if i==vif.__channel then %> selected="selected"<% end %>>
-              <% if i==0 then %>Auto<% else %><%=i%><% end %>
-              </option>
-              <% end %>
-            </select>
-          </td>
-        </tr>
-        <% end %>
         <tr>
           <td>Auth Mode</td>
           <td>
@@ -151,7 +137,7 @@ end
           </td>
         </tr>
         <tr>
-          <td>Key Renewal Interval</td>
+          <td>Key Renewal Interval </td>
           <td>
             <input value="<%=vif.__rekeyinterval%>" type="text" name="__rekeyinterval" id="__rekeyinterval" cfg="RekeyInterval" /> second(s) (0 ~ 4194303)
           </td>
@@ -268,21 +254,21 @@ end
       </tbody>
       <tbody id="PMF" style="display:none;">
         <tr>
-          <td>MFPC </td>
+          <td>Mgt Frame Protection Capable</td>
           <td> <input name="__pmfmfpc" id="__pmfmfpc" value="1"
             <% if mtkwifi.token_get(cfgs["PMFMFPC"], vifidx, 0) == "1" then %>
             checked="checked"
             <% end %> type="checkbox" /> </td>
         </tr>
         <tr>
-          <td>MFPR </td>
+          <td>Mgt Frame Protection Required </td>
           <td> <input name="__pmfmfpr" id="__pmfmfpr" value="1"
             <% if mtkwifi.token_get(cfgs["PMFMFPR"], vifidx, 0) == "1" then %>
             checked="checked"
             <% end %> type="checkbox" /></td>
         </tr>
         <tr>
-          <td>MFPSHA256 </td>
+          <td>Mgt Frame Protection use SHA256 </td>
           <td> <input name="__pmfsha256" id="__pmfsha256" value="1"
             <% if mtkwifi.token_get(cfgs["PMFSHA256"], vifidx, 0) == "1" then %>
             checked="checked"
