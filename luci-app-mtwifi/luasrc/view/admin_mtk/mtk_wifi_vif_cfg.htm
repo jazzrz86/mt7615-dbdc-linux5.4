@@ -254,7 +254,7 @@ end
       </tbody>
       <tbody id="PMF" style="display:none;">
         <tr>
-          <td>Mgt Frame Protection Capable</td>
+          <td>Mgt Frame Protection Capable </td>
           <td> <input name="__pmfmfpc" id="__pmfmfpc" value="1"
             <% if mtkwifi.token_get(cfgs["PMFMFPC"], vifidx, 0) == "1" then %>
             checked="checked"
@@ -357,8 +357,9 @@ end
         </tr>
       </tfoot>
     </table>
-
+    <br>
     <pre>
+# Access Control List
 # 1. one MAC one line.
 # 2. empty lines will be ignored.
 # 3. lines start with "#" will be ignored.
