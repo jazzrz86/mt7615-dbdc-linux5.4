@@ -5383,15 +5383,15 @@ VOID PeerPairMsg4Action(
 		MboIndicateStaBssidInfo(pAd, &pAd->ApCfg.MBSSID[pEntry->func_tb_idx].wdev, pEntry->Addr);
 #endif /* MBO_SUPPORT */
 
-		MTWF_LOG(DBG_CAT_SEC, DBG_SUBCAT_ALL, DBG_LVL_OFF,
+		/*MTWF_LOG(DBG_CAT_SEC, DBG_SUBCAT_ALL, DBG_LVL_OFF,
 				 ("AP SETKEYS DONE - AKMMap=%s, PairwiseCipher=%s, GroupCipher=%s, wcid=%d from %02X:%02X:%02X:%02X:%02X:%02X\n\n",
 				  GetAuthModeStr(pSecConfig->AKMMap),
 				  GetEncryModeStr(pSecConfig->PairwiseCipher),
 				  GetEncryModeStr(pSecConfig->GroupCipher),
 				  pEntry->wcid,
-				  PRINT_MAC(pEntry->Addr)));
+				  PRINT_MAC(pEntry->Addr)));*/
 
-		if ((!IS_AKM_OPEN(GET_SEC_AKM(pSecConfig))) && tr_entry->PortSecured == 1) {
+		/*if ((!IS_AKM_OPEN(GET_SEC_AKM(pSecConfig))) && tr_entry->PortSecured == 1) {
 			INT32 i;
 
 			MTWF_LOG(DBG_CAT_CFG, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("PTK:"));
@@ -5400,7 +5400,7 @@ VOID PeerPairMsg4Action(
 				MTWF_LOG(DBG_CAT_CFG, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("%02x", pSecConfig->PTK[i]));
 
 			MTWF_LOG(DBG_CAT_CFG, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("\n"));
-		}
+		}*/
 	} else {
 		/* 5. init Group 2-way handshake if necessary.*/
 		RTMPSetTimer(&pEntry->SecConfig.StartFor2WayTimer, ENQUEUE_EAPOL_2WAY_START_TIMER);
@@ -5540,11 +5540,11 @@ VOID PeerGroupMsg2Action(
 		RTMPSendWirelessEvent(pAd, IW_SET_KEY_DONE_WPA1_EVENT_FLAG, pEntry->Addr, pEntry->wdev->wdev_idx, 0);
 	}
 
-	MTWF_LOG(DBG_CAT_SEC, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("AP SETKEYS DONE - AKMMap=%s, PairwiseCipher=%s, GroupCipher=%s from %02X:%02X:%02X:%02X:%02X:%02X\n\n",
+	/*MTWF_LOG(DBG_CAT_SEC, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("AP SETKEYS DONE - AKMMap=%s, PairwiseCipher=%s, GroupCipher=%s from %02X:%02X:%02X:%02X:%02X:%02X\n\n",
 			 GetAuthModeStr(pSecConfig->AKMMap),
 			 GetEncryModeStr(pSecConfig->PairwiseCipher),
 			 GetEncryModeStr(pSecConfig->GroupCipher),
-			 PRINT_MAC(pEntry->Addr)));
+			 PRINT_MAC(pEntry->Addr)));*/
 }
 
 
