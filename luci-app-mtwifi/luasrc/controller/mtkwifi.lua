@@ -271,12 +271,55 @@ function vif_del(dev, vif)
     luci.http.redirect(luci.dispatcher.build_url("admin", "network", "wifi"))
 end
 
+local function esc(x)
+   return (x:gsub('%%', '%%%%')
+            :gsub('^%^', '%%^')
+            :gsub('%$$', '%%$')
+            :gsub('%(', '%%(')
+            :gsub('%)', '%%)')
+            :gsub('%.', '%%.')
+            :gsub('%[', '%%[')
+            :gsub('%]', '%%]')
+            :gsub('%*', '%%*')
+            :gsub('%+', '%%+')
+            :gsub('%-', '%%-')
+            :gsub('%?', '%%?'))
+end
+
+function add_vif_into_lan(vif)
+    local brvifs = mtkwifi.__trim(
+        mtkwifi.read_pipe("uci get network.lan.ifname"))
+    if not string.match(brvifs, esc(vif)) then
+        nixio.syslog("debug", "add_vif_into_lan: add "..vif.." into lan")
+        brvifs = brvifs.." "..vif
+        os.execute("uci set network.lan.ifname=\""..brvifs.."\"")
+        os.execute("uci commit")
+        -- os.execute("brctl addif br-lan "..vif)
+        os.execute("ubus call network.interface.lan add_device \"{\\\"name\\\":\\\""..vif.."\\\"}\"")
+    end
+end
+
+function del_vif_from_lan(vif)
+    local brvifs = mtkwifi.__trim(
+        mtkwifi.read_pipe("uci get network.lan.ifname"))
+    if string.match(brvifs, esc(vif)) then
+        nixio.syslog("debug", "del_vif_from_lan: del "..vif.." from lan")
+        brvifs = brvifs:gsub(vif, "")
+        os.execute("uci set network.lan.ifname=\""..brvifs.."\"")
+        os.execute("uci commit")
+        -- os.execute("brctl addif br-lan "..vif)
+        os.execute("ubus call network.interface.lan remove_device \"{\\\"name\\\":\\\""..vif.."\\\"}\"")
+    end
+end
+
 function vif_disable(iface)
+    del_vif_from_lan(iface)
     os.execute("ifconfig "..iface.." down")
     luci.http.redirect(luci.dispatcher.build_url("admin", "network", "wifi"))
 end
 
 function vif_enable(iface)
+    add_vif_into_lan(iface)
     os.execute("ifconfig "..iface.." up")
     luci.http.redirect(luci.dispatcher.build_url("admin", "network", "wifi"))
 end
