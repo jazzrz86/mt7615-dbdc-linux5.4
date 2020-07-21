@@ -45,7 +45,7 @@ void RtmpAllocDescBuf(
 {
 	dma_addr_t DmaAddr = (dma_addr_t)(*phy_addr);
 	struct device *pdev = (struct device *)pDev;
-	*VirtualAddress = (PVOID)dma_zalloc_coherent(pdev, sizeof(char) * Length, &DmaAddr, GFP_KERNEL);
+	*VirtualAddress = (PVOID)dma_alloc_coherent(pdev, sizeof(char) * Length, &DmaAddr, GFP_KERNEL);
 	*phy_addr = (NDIS_PHYSICAL_ADDRESS)DmaAddr;
 }
 
