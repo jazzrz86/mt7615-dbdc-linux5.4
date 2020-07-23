@@ -26,7 +26,7 @@ local devs = mtkwifi.get_all_devs()
 
     <% for _,dev in ipairs(devs) do %>
     <fieldset class="cbi-section">
-        <table class="cbi-section-table" style="margin:10px; empty-cells:hide">
+        <table class="cbi-section-table cbi-section-actions" style="margin:10px; empty-cells:hide">
             <!-- physical device -->
             <tbody>
                 <tr>
@@ -46,7 +46,7 @@ local devs = mtkwifi.get_all_devs()
                         <br/>
                         <span>Work mode: <% if dev.ApCliEnable == "1" then %> APCli <% else %> AP<% end %> <!--  <br/> driver: <%=dev.version%> --></span>
                     </td>
-                    <td style="width:310px;text-align:right">
+                    <td style="padding-left: 10px;">
                         <input class="cbi-button cbi-button-reload" style="width:100px" title="Reload WiFi network" value="Reload" type="button" onclick='wifi_reload("<%=luci.dispatcher.build_url("admin", "network", "wifi", "reload", dev.devname)%>");' />
                         <input class="cbi-button cbi-button-edit" style="width:100px" title="Configure WiFi device" value="Config" type="button" onclick="location.href='<%=luci.dispatcher.build_url("admin", "network", "wifi", "dev_cfg_view", dev.devname)%>'" />
                     </td>
