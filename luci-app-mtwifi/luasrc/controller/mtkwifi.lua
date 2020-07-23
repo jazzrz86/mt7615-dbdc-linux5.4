@@ -618,10 +618,7 @@ function vif_cfg(dev, vif)
     mtkwifi.debug(devname, profile)
     mtkwifi.save_profile(cfgs, profile)
     if http.formvalue("__apply") then
-        os.execute("cp -f "..profile.." "..mtkwifi.__profile_bak_path(profile))
-        os.execute("ifconfig "..vif.." down")
-        os.execute("ifconfig "..vif.." up")
-        add_vif_into_lan(iface)
+        __mtkwifi_reload(devname)
     end
     return luci.http.redirect(to_url)
 end
