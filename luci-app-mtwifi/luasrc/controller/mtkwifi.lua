@@ -1,9 +1,9 @@
 -- This module is a demo to configure MTK' proprietary WiFi driver.
 -- Basic idea is to bypass uci and edit wireless profile (mt76xx.dat) directly.
--- LuCI's WiFi configuration is more logical and elegent, but it's quite tricky to 
+-- LuCI's WiFi configuration is more logical and elegent, but it's quite tricky to
 -- translate uci into MTK's WiFi profile (like we did in "uci2dat").
 -- And you will get your hands dirty.
--- 
+--
 -- Hua Shao <nossiac@163.com>
 
 module("luci.controller.mtkwifi", package.seeall)
@@ -11,26 +11,41 @@ local http = require("luci.http")
 local mtkwifi = require("mtkwifi")
 
 function __mtkwifi_reload(devname)
-    local profiles = mtkwifi.search_dev_and_profile()
-    local profile = profiles[devname]
-    if profile ~= nil then
-        local diff = mtkwifi.diff_profile(profile)
-        -- Adding or deleting a vif will need to reinstall the wifi ko,
-        -- so we call "mtkwifi restart" here.
-        if diff.BssidNum then
-            os.execute("/sbin/mtkwifi restart "..devname)
-        else
-            os.execute("/sbin/mtkwifi reload "..devname)
+    nixio.syslog("info", "__mtkwifi_reload, dev: "..devname)
+    local devs = mtkwifi.get_all_devs()
+    local dev = {}
+    for _,v in ipairs(devs) do
+        if v.devname == devname then
+            dev = v
+            break
         end
-        -- keep a backup for this commit
-        -- it will be used in mtkwifi.diff_profile()
-        os.execute("cp -f "..profile.." "..mtkwifi.__profile_bak_path(profile))
     end
+    assert(dev)
+
+    local profile = dev.profile
+    local diff = mtkwifi.diff_profile(profile)
+    -- Adding or deleting a vif will need to reinstall the wifi ko,
+    -- so we call "mtkwifi restart" here.
+    if diff.BssidNum then
+        nixio.syslog("info", "__mtkwifi_reload, going to reload kernel module")
+        os.execute("/sbin/mtkwifi down "..devname)
+        os.execute("rmmod mt_wifi")
+        os.execute("modprobe mt_wifi")
+    else
+        for _,vif in ipairs(dev.vifs) do
+            if vif.state == "up" then
+                nixio.syslog("info", "__mtkwifi_reload, restarting "..vif.vifname)
+                os.execute("ifconfig "..vif.vifname.." down")
+                os.execute("ifconfig "..vif.vifname.." up")
+            end
+        end
+    end
+    -- keep a backup for this commit
+    -- it will be used in mtkwifi.diff_profile()
+    os.execute("cp -f "..profile.." "..mtkwifi.__profile_bak_path(profile))
 end
 
-
 function index()
-
     entry({"admin", "network", "wifi"}, template("admin_mtk/mtk_wifi_overview"), _("Wireless"), 25)
     entry({"admin", "network", "wifi", "dev_cfg_view"}, template("admin_mtk/mtk_wifi_dev_cfg")).leaf = true
     entry({"admin", "network", "wifi", "dev_cfg"}, call("dev_cfg")).leaf = true
@@ -229,7 +244,7 @@ function vif_del(dev, vif)
     local devs = mtkwifi.get_all_devs()
     local idx = devs[devname]["vifs"][vifname].vifidx -- or tonumber(string.match(vifname, "%d+")) + 1
     mtkwifi.debug("idx="..idx, devname, vifname)
-    local profile = devs[devname].profile 
+    local profile = devs[devname].profile
     assert(profile)
     if idx and tonumber(idx) >= 0 then
         local cfgs = mtkwifi.load_profile(profile)
@@ -548,13 +563,13 @@ function initialize_multiBssParameters(cfgs,vif_idx)
     return cfgs
 end
 
-function vif_cfg(dev, vif) 
+function vif_cfg(dev, vif)
     local devname, vifname = dev, vif
     if not devname then devname = vif end
     mtkwifi.debug("devname="..devname)
     mtkwifi.debug("vifname="..(vifname or ""))
     local devs = mtkwifi.get_all_devs()
-    local profile = devs[devname].profile 
+    local profile = devs[devname].profile
     assert(profile)
 
     local cfgs = mtkwifi.load_profile(profile)
@@ -603,8 +618,10 @@ function vif_cfg(dev, vif)
     mtkwifi.debug(devname, profile)
     mtkwifi.save_profile(cfgs, profile)
     if http.formvalue("__apply") then
-        vif_disable(vif)
-        vif_enable(vif)
+        os.execute("cp -f "..profile.." "..mtkwifi.__profile_bak_path(profile))
+        os.execute("ifconfig "..vif.." down")
+        os.execute("ifconfig "..vif.." up")
+        add_vif_into_lan(iface)
     end
     return luci.http.redirect(to_url)
 end
