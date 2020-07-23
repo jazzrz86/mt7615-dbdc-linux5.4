@@ -12,21 +12,19 @@ local mtkwifi = require("mtkwifi")
 
 function __mtkwifi_reload(devname)
     local profiles = mtkwifi.search_dev_and_profile()
-
-    for dev,profile in pairs(profiles) do
-        if not devname or devname == dev then
-            local diff = mtkwifi.diff_profile(profile)
-            -- Adding or deleting a vif will need to reinstall the wifi ko,
-            -- so we call "mtkwifi restart" here.
-            if diff.BssidNum then
-                os.execute("/sbin/mtkwifi restart "..devname)
-            else
-                os.execute("/sbin/mtkwifi reload "..devname)
-            end
-            -- keep a backup for this commit
-            -- it will be used in mtkwifi.diff_profile()
-            os.execute("cp -f "..profile.." "..mtkwifi.__profile_bak_path(profile))
+    local profile = profiles[devname]
+    if profile ~= nil then
+        local diff = mtkwifi.diff_profile(profile)
+        -- Adding or deleting a vif will need to reinstall the wifi ko,
+        -- so we call "mtkwifi restart" here.
+        if diff.BssidNum then
+            os.execute("/sbin/mtkwifi restart "..devname)
+        else
+            os.execute("/sbin/mtkwifi reload "..devname)
         end
+        -- keep a backup for this commit
+        -- it will be used in mtkwifi.diff_profile()
+        os.execute("cp -f "..profile.." "..mtkwifi.__profile_bak_path(profile))
     end
 end
 
@@ -605,7 +603,8 @@ function vif_cfg(dev, vif)
     mtkwifi.debug(devname, profile)
     mtkwifi.save_profile(cfgs, profile)
     if http.formvalue("__apply") then
-        __mtkwifi_reload(devname)
+        vif_disable(vif)
+        vif_enable(vif)
     end
     return luci.http.redirect(to_url)
 end
