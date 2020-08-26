@@ -205,7 +205,7 @@ function dev_cfg(devname)
         __mtkwifi_reload(devname)
     end
 
-    luci.http.redirect(luci.dispatcher.build_url("admin", "network", "wifi", "dev_cfg_view",devname))
+    luci.http.redirect(luci.dispatcher.build_url("admin", "network", "wifi"))
 end
 
 function dev_cfg_raw(devname)
@@ -218,7 +218,7 @@ function dev_cfg_raw(devname)
     local cfgs = mtkwifi.load_profile(nil, raw)
     mtkwifi.save_profile(cfgs, profiles[devname])
 
-    luci.http.redirect(luci.dispatcher.build_url("admin", "network", "wifi", "dev_cfg_view", devname))
+    luci.http.redirect(luci.dispatcher.build_url("admin", "network", "wifi"))
 end
 
 function dev_cfg_reset(devname)
@@ -589,7 +589,7 @@ function vif_cfg(dev, vif)
     if http.formvalue("__action") == "vif_cfg_view" then
         vif_idx = devs[devname]["vifs"][vifname].vifidx
         mtkwifi.debug("vif_idx=", vif_idx, devname, vifname)
-        to_url = luci.dispatcher.build_url("admin", "network", "wifi", "vif_cfg_view", devname, vifname)
+        to_url = luci.dispatcher.build_url("admin", "network", "wifi")
     elseif http.formvalue("__action") == "vif_add_view" then
         cfgs.BssidNum = tonumber(cfgs.BssidNum) + 1
         vif_idx = tonumber(cfgs.BssidNum)
