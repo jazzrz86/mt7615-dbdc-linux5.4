@@ -182,7 +182,7 @@ define KernelPackage/mt_wifi
   TITLE:=MTK wifi AP driver
 ifneq ($(CONFIG_MTK_WHNAT_SUPPORT), )
   FILES:=$(PKG_BUILD_DIR)/mt_wifi_ap/mt_wifi.ko \
-	$(PKG_BUILD_DIR)/mt_wifi/embedded/tools/plug_in/whnat/mt_whnat.ko
+	$(PKG_BUILD_DIR)/mt_wifi/embedded/plug_in/whnat/mt_whnat.ko
 else
   FILES:=$(PKG_BUILD_DIR)/mt_wifi_ap/mt_wifi.ko
 endif
